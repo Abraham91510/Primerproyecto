@@ -11,3 +11,4 @@ use App\Http\Controllers\PrincipalController;
 
 Route::get('/hello',HomeController::class);
 Route::get('post/mensaje',[PostController::class, 'Mensaje']);
+Route::get('post/about/{param?}/{name?}', [PostController::class, 'About']);

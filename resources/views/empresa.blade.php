@@ -27,54 +27,20 @@
 @endsection
 
 @section("descripcion_about")
-    {($descripcion_about)}
+    {{$descripcion_about}}
 @endsection
 
 @section("Autor")
-    {($nombre)}
+    {{$nombre}}
 @endsection
 
-@section("actividad, $actividad")
+@section("actividad",$actividad)
 @section ("texto_ejemplo")
-    {($texto_ejemplo)}
+    {{$texto_ejemplo}}
 @endsection
 
 @section("contenido_listado")
     <h2>Listado de Usuarios Registrados</h2>
-    <ul>
-        @if(isset($listadousuarios))
-            <table id='tablausarios' class=table
-            table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Teléfono</th>
-                    <th>Calle</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach($listadousuarios as $usario)
-                <tr>
-                    <td>{{$usuario->name}}</td>
-                    <td>{{$usuario->email}}</td>
-                    <td>{{$usuario->telefono}}</td>
-                    <td>{{$usuario->calle}}</td>
-                </tr>
-            @endforeach
-            </tbody>
-            </table>
-        @else
-            <p>La variable de listado de usuarios no está
-            definida</p>
-        @endif
-    </ul>
+    
 @endsection
 
-
-
-
-
-
-
-    </ul>

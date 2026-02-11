@@ -14,4 +14,14 @@ Route::get('post/mensaje',[PostController::class, 'Mensaje']);
 Route::get('post/about/{param?}/{name?}', [PostController::class, 'About']);
 Route::get('/empresa',[HomeController::class,'empresa'])->name('empresa');
 
+Route::get('/', function () {
+    return view('welcome');
+})->name('vista_inicio');
+
+Route::get('/contact', function () {
+    $nombre = "Alejandro Góngora Escalante";
+    return view('contact', ['nombre' => $nombre,'carrera' => 'Doctor en Sistemas 
+        Computacionales']);
+})->name('contact');
+
 

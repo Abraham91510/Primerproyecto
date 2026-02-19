@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Iluminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Pagina extends Model
 {

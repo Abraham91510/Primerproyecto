@@ -114,6 +114,33 @@
     <i class="fa-brands fa-tiktok"></i>
 </div>
 
+<div class="modal" tabindex="-1" id="myModal" role="dialog">
+  <form id="editForm" method="POST">
+    @csrf @method('PUT')
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">@yield('titulo_modal')</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type='hidden' name='id' id='id'>
+          <input type='text' name='name' id='name' class="form-control">
+          <input type='text' name='calle' id='calle' class="form-control">
+          <p>Modal body text goes here.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
 </body>
 </html>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -126,8 +153,93 @@
                 { data: 'name' },
                 { data: 'email' },
                 { data: 'telefono' },
-                { data: 'calle' }
+                { data: 'calle' },
+                { data: 'acciones' },
+                { data: 'eliminar_logicamente' },
+                { data: 'eliminar_fisicamente' }
+
+
         ]
     });
 });
+</script>
+
+<script>
+
+
+// Eliminar lógicamente usuario con mensaje dinámico según estado
+function eliminarLogicamente(id, isActive){
+    // Convertimos el valor a booleano en caso de que venga como número
+    isActive = Boolean(isActive);
+
+    let mensaje = isActive 
+        ? "¿Seguro que deseas desactivar este usuario?" 
+        : "¿Seguro que deseas activar este usuario?";
+
+    if(confirm(mensaje)){
+        $.ajax({
+            url: '/eliminar-logicamente-dato/' + id,
+            type: 'POST', // usamos POST
+            data: {
+                _token: '{{ csrf_token() }}',
+                _method: 'PUT' 
+            },
+            success: function(response){
+                location.reload(); // recarga la página para reflejar cambio
+            },
+            error: function(xhr){
+                console.log(xhr.responseText);
+            }
+        });
+    }
+}
+
+// Eliminar registro de manera definitiva
+function eliminarDefinitivo(id){
+    if(confirm("¿Seguro que deseas eliminar este usuario de manera definitiva?")){
+        $.ajax({
+            url: '/eliminar-definitivo-dato/' + id,
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                _method: 'DELETE' 
+            },
+            success: function(response){
+                location.reload(); // recarga la página para reflejar cambio
+            },
+            error: function(xhr){
+                console.log(xhr.responseText);
+            }
+        });
+    }
+}
+
+    function carga_modal(id, nombre, calle){
+    $('#id').val(id);
+    $('#name').val(nombre);
+    $('#calle').val(calle);
+    $("#editForm").attr('action', '/actualizar-dato/'+id);
+    $('#myModal').modal('show');
+}
+
+$("#editForm").on('submit', function(e){
+    e.preventDefault();
+    alert($(this).serialize());
+    $.ajax({
+        url: $(this).attr('action'),
+        type: 'POST',
+        method: 'PUT',
+        data: $(this).serialize(),
+        success: function(response){
+            //console.log(response);
+            $("#myModal").modal('hide');
+            location.reload();
+        },
+        error: function(xhr){
+            console.log(xhr.responseText);
+        }
+    })
+})
+
+
 </script>

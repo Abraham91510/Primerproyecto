@@ -26,6 +26,51 @@ class HomeController extends Controller
         return view('empresa', $datos);
     }
 
+    public function update(Request $request)
+{
+    $usuarios = new Pagina();
+    $respuesta = $usuarios->BuscarId($request->id);
+
+    if (!empty($respuesta)) {
+        $respuesta->name = $request->name;
+        $respuesta->calle = $request->calle;
+        $respuesta->save();
+    }
+
+    return $respuesta;
+}
+
+public function eliminarLogicamenteDato(Request $request)
+{
+    // Crear instancia del modelo
+    $usuarios = new Pagina();
+
+    // Usar el método BuscarId para obtener el registro
+    $respuesta = $usuarios->BuscarId($request->id);
+
+    if (!empty($respuesta)) {
+        // Alternar entre activo (1) e inactivo (0)
+        $respuesta->is_active = $respuesta->is_active ? 0 : 1;
+        $respuesta->save();
+    }
+
+    // Redirige a la vista de empresa
+    return redirect()->route('empresa');
+}
+
+public function eliminarDefinitivo($id)
+{
+    $usuarios = new Pagina();
+    $registro = $usuarios->BuscarId($id);
+
+    if(!empty($registro)){
+        $registro->delete(); // elimina definitivamente
+    }
+
+    return redirect()->route('empresa');
+}
+
+
 
 
 }
